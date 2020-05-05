@@ -16,7 +16,7 @@ class App extends Component {
     const date = new Date();
 
     this.state = {
-      fetching: false,
+      fetching: 0,
       freelancers: [],
       currentFreelancers: [],
       online_only: true,
@@ -38,13 +38,15 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.getCountries().then(() => this.fetchFreelancers(0, 100));
+    this.getCountries();
   }
 
   fetch = async () => {
-    this.setState({ freelancers: [], fetching: true }, () => {
+    this.fetching = 50;
+    this.setState({ freelancers: [], fetching: 50 }, async () => {
       for (let i = 0; i < 50; i += 1) {
-        this.fetchFreelancers(100 * i, 100)
+        this.fetchFreelancers(100 * i, 100);
+        await new Promise(resolve => setTimeout(() => resolve(), 10));
       }
     })
   }
@@ -74,8 +76,9 @@ class App extends Component {
         }));
         this.setState({ freelancers: newFreelancers }, () => this.fetchFreelancers(minSequence + limit * 50, limit));
       } else {
-        setTimeout(() => this.setState({ fetching: false }), 4000)
-        console.clear();
+        this.fetching -= 1;
+        this.setState({ fetching: this.fetching })
+        //console.clear();
       }
     } catch {
     }
@@ -142,6 +145,8 @@ class App extends Component {
     const { freelancers, online_only, countries, selectedCountries, minRate, maxRate, startDate, endDate, minSequence, count, fetching } = this.state;
     const sort = (a, b) => a.registration_date - b.registration_date;
 
+    console.log('fetching', fetching)
+
     return (
       <div className="App">
         <div>
@@ -180,12 +185,12 @@ class App extends Component {
           </div>
 
           <button style={{ marginTop: 10, display: 'block' }} onClick={this.fetch}>Fetch Freelancers</button>
-          {fetching && <Loader
+          {fetching ? <Loader
             type="Puff"
             color="#00BFFF"
             height={100}
             width={100}
-          />}
+          /> : null}
         </div>
 
         <h3>There are {freelancers.filter((freelancer) => !freelancer.profile_deleted).length} freelancers.</h3>
