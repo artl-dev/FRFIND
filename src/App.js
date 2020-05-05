@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Multiselect } from 'multiselect-react-dropdown';
 
-import DatePicker from "react-datepicker";
+import Loader from 'react-loader-spinner'
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import './App.css';
 
@@ -14,6 +16,7 @@ class App extends Component {
     const date = new Date();
 
     this.state = {
+      fetching: false,
       freelancers: [],
       currentFreelancers: [],
       online_only: true,
@@ -39,7 +42,7 @@ class App extends Component {
   }
 
   fetch = async () => {
-    this.setState({ freelancers: [] }, () => {
+    this.setState({ freelancers: [], fetching: true }, () => {
       for (let i = 0; i < 50; i += 1) {
         this.fetchFreelancers(100 * i, 100)
       }
@@ -71,6 +74,7 @@ class App extends Component {
         }));
         this.setState({ freelancers: newFreelancers }, () => this.fetchFreelancers(minSequence + limit * 50, limit));
       } else {
+        setTimeout(() => this.setState({ fetching: false }), 4000)
         console.clear();
       }
     } catch {
@@ -135,7 +139,7 @@ class App extends Component {
   }
 
   render() {
-    const { freelancers, online_only, countries, selectedCountries, minRate, maxRate, startDate, endDate, minSequence, count, currentFreelancers } = this.state;
+    const { freelancers, online_only, countries, selectedCountries, minRate, maxRate, startDate, endDate, minSequence, count, fetching } = this.state;
     const sort = (a, b) => a.registration_date - b.registration_date;
 
     return (
@@ -176,6 +180,12 @@ class App extends Component {
           </div>
 
           <button style={{ marginTop: 10, display: 'block' }} onClick={this.fetch}>Fetch Freelancers</button>
+          {fetching && <Loader
+            type="Puff"
+            color="#00BFFF"
+            height={100}
+            width={100}
+          />}
         </div>
 
         <h3>There are {freelancers.filter((freelancer) => !freelancer.profile_deleted).length} freelancers.</h3>
