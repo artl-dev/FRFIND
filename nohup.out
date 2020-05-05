@@ -1,0 +1,2 @@
+2019-06-30 00:04:44.381 Skype Helper[3391:92299] Couldn't set selectedTextBackgroundColor from default ()
+objc[3386]: Class FIFinderSyncExtensionHost is implemented in both /System/Library/PrivateFrameworks/FinderKit.framework/Versions/A/FinderKit (0x7fff98f66c90) and /System/Library/PrivateFrameworks/FileProvider.framework/OverrideBundles/FinderSyncCollaborationFileProviderOverride.bundle/Contents/MacOS/FinderSyncCollaborationFileProviderOverride (0x115d2bcd8). One of the two will be used. Which one is undefined.
