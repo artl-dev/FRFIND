@@ -40,7 +40,9 @@ class App extends Component {
 
   fetch = async () => {
     this.setState({ freelancers: [] }, () => {
-      this.fetchFreelancers(0, 100)
+      for (let i = 0; i < 50; i += 1) {
+        this.fetchFreelancers(100 * i, 100)
+      }
     })
   }
 
@@ -67,7 +69,7 @@ class App extends Component {
           newFreelancer.profile_deleted = false;
           return newFreelancer;
         }));
-        this.setState({ freelancers: newFreelancers }, () => this.fetchFreelancers(minSequence + result.users.length, limit));
+        this.setState({ freelancers: newFreelancers }, () => this.fetchFreelancers(minSequence + limit * 50, limit));
       } else {
         console.clear();
       }
