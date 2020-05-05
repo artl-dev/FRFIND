@@ -7,9 +7,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import './App.css';
 
-let twoDayAgo = new Date();
-twoDayAgo.setDate(twoDayAgo.getDate() - 3);
-
 class App extends Component {
   constructor() {
     super();
