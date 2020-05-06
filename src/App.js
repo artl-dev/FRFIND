@@ -27,7 +27,7 @@ class App extends Component {
       minSequence: 0,
       count: 100,
       startDate: new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1),
-      endDate: new Date(date)
+      endDate: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1)
     };
   }
 
